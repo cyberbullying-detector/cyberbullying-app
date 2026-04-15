@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cyberbullying Detection System</title>
+
+    <!-- Professional Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- ✅ Header Added -->
+<header class="header">
+   Cyberbullying Message Scanning System 
+</header>
+
+<div class="container">
+
+    <!-- Title with Neon Dot -->
+    <div class="title-row">
+        <span class="title-dot"></span>
+        <h1>Cyberbullying Detection System</h1>
+    </div>
+
+    <!-- Category Cards -->
+    <div class="categories">
+        <div class="card safe" id="safe">Safe</div>
+        <div class="card age" id="age">Age</div>
+        <div class="card gender" id="gender">Gender</div>
+        <div class="card ethnicity" id="ethnicity">Ethnicity</div>
+        <div class="card religion" id="religion">Religion</div>
+    </div>
+
+    <!-- Input -->
+    <form id="form" action="/predict" method="post">
+
+        <div class="input-box">
+            <textarea id="message" name="message" maxlength="500"
+placeholder="Paste or type a message to analyze for harmful content..." required></textarea>
+        </div>
+
+        <!-- Examples -->
+        <div class="examples">
+            <span onclick="fillText('You are too young to understand')">Try: Age</span>
+            <span onclick="fillText('People like you are not welcome')">Try: Ethnicity</span>
+            <span onclick="fillText('Your religion is stupid')">Try: Religion</span>
+            <span onclick="fillText('Girls cannot do this')">Try: Gender</span>
+        </div>
+
+        <button type="submit">Run Detection Scan ↓</button>
+
+    </form>
+
+    <!-- Loader -->
+    <div id="loader" class="loader hidden">Analyzing message...</div>
+
+    <!-- Result -->
+    {% if prediction %}
+<div class="result" id="result">
+    {{ prediction }}
+    <br>
+    <small style="font-size: 12px; opacity: 0.8;">
+        Confidence: {{ confidence }}
+    </small>
+</div>
+{% endif %}
+</div>
+
+<!-- ✅ Footer Added -->
+<footer class="footer">
+    Final Year Project | Cyberbullying Message Analysis System
+</footer>
+
+<script>
+// Character counter
+const textarea = document.getElementById("message");
+const counter = document.getElementById("counter");
+
+textarea.addEventListener("input", () => {
+    counter.textContent = textarea.value.length + " / 500";
+});
+
+function fillText(text){
+    textarea.value = text;
+    counter.textContent = text.length + " / 500";
+}
+
+// Loader
+document.getElementById("form").addEventListener("submit", function(){
+    document.getElementById("loader").classList.remove("hidden");
+});
+
+// ✅ PERFECT NEON MATCHING
+window.onload = function() {
+    let result = document.getElementById("result");
+    if(!result) return;
+
+    let text = result.innerText.toLowerCase();
+
+    // remove all first
+    document.querySelectorAll(".card").forEach(card => {
+        card.classList.remove("active");
+    });
+
+    if (text.includes("safe")) {
+        document.getElementById("safe").classList.add("active");
+    }
+    else if (text.includes("age")) {
+        document.getElementById("age").classList.add("active");
+    }
+    else if (text.includes("gender")) {
+        document.getElementById("gender").classList.add("active");
+    }
+    else if (text.includes("ethnicity")) {
+        document.getElementById("ethnicity").classList.add("active");
+    }
+    else if (text.includes("religion")) {
+        document.getElementById("religion").classList.add("active");
+    }
+};
+</script>
+
+</body>
+</html>

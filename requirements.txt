@@ -1,0 +1,6 @@
+flask
+joblib
+nltk
+demoji
+scikit-learn
+numpy
